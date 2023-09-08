@@ -17,8 +17,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'dob' => $request->dob,
                 'nrc' => $request->nrc,
-                'gender' => $request->gender,
-                'kyc_status' => $request->kyc_status,
+                'gender' => $request->gender
             ]
         );
 

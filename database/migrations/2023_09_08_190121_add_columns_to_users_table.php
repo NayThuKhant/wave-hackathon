@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('dob')->nullable()->after('name');
             $table->string('nrc')->nullable()->after('dob');
             $table->string('gender')->nullable()->after('nrc');
-            $table->string('kyc_status')->after('nrc');
         });
     }
 
@@ -32,7 +31,6 @@ return new class extends Migration
             $table->dropColumn('dob');
             $table->dropColumn('nrc');
             $table->dropColumn('gender');
-            $table->dropColumn('kyc_status');
         });
     }
 };
