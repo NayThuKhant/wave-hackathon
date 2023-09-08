@@ -38,9 +38,9 @@ class StatsOverview extends BaseWidget
         $adminChartCount = count($adminChart);
 
         $descriptionIcon = 'heroicon-m-arrow-trending-';
-            optional($adminChart)[$adminChartCount - 1] > optional($adminChart)[$adminChartCount - 2] ?? 0 ? $descriptionIcon .= 'up' : $descriptionIcon .= 'down';
+        optional($adminChart)[$adminChartCount - 1] > optional($adminChart)[$adminChartCount - 2] ?? 0 ? $descriptionIcon .= 'up' : $descriptionIcon .= 'down';
 
-            // TODO - change with actual raising or falling icon, also description and color
+        // TODO - change with actual raising or falling icon, also description and color
         return Stat::make('Total Admins', $totalAdmins)
             ->icon('heroicon-o-user-group')
             ->description('TODO')
@@ -64,7 +64,7 @@ class StatsOverview extends BaseWidget
         $userChartCount = count($userChart);
 
         $descriptionIcon = 'heroicon-m-arrow-trending-';
-            optional($userChart)[$userChartCount - 1] > optional($userChart)[$userChartCount - 2] ?? 0 ? $descriptionIcon .= 'up' : $descriptionIcon .= 'down';
+        optional($userChart)[$userChartCount - 1] > optional($userChart)[$userChartCount - 2] ?? 0 ? $descriptionIcon .= 'up' : $descriptionIcon .= 'down';
 
         return Stat::make('Total Users', $totalUsers)
             ->icon('heroicon-o-user-group')

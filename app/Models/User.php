@@ -26,7 +26,7 @@ class User extends Authenticatable
         'nrc',
         'gender',
         'kyc_status',
-        'mobile_number'
+        'mobile_number',
     ];
 
     /**

@@ -8,9 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
@@ -25,7 +23,7 @@ class UserResource extends Resource
         return array_key_exists('create', static::getPages());
     }
 
-     // TODO Deleting a user in this application is not allowed for now
+    // TODO Deleting a user in this application is not allowed for now
     public static function canDelete(Model $record): bool
     {
         return false;
@@ -37,10 +35,9 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required()->maxLength(256)->disabled(),
-                Forms\Components\TextInput::make('email')->required()->email()->unique()->disabled()
+                Forms\Components\TextInput::make('email')->required()->email()->unique()->disabled(),
             ]);
     }
-
 
     /**
      * @throws \Exception

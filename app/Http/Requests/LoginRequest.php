@@ -23,12 +23,12 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'source' => ['required', Rule::in(['wave','kpay'])],
+            'source' => ['required', Rule::in(['wave', 'kpay'])],
             'msisdn' => 'required',
             'name' => 'required',
             'dob' => 'required',
             'gender' => 'required',
-            'kyc_status' => 'required'
+            'kyc_status' => 'required',
         ];
     }
 }

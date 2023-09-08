@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -15,34 +14,34 @@ class AdminSeeder extends Seeder
     {
         collect([
             [
-                "name" => "Admin",
-                "email" => "admin@ahku.com",
-                "password" => "password"
+                'name' => 'Admin',
+                'email' => 'admin@ahku.com',
+                'password' => 'password',
             ],
             [
-                "name" => "Admin1",
-                "email" => "admin1@ahku.com",
-                "password" => "password"
+                'name' => 'Admin1',
+                'email' => 'admin1@ahku.com',
+                'password' => 'password',
             ],
             [
-                "name" => "Admin2",
-                "email" => "admin2@ahku.com",
-                "password" => "password"
+                'name' => 'Admin2',
+                'email' => 'admin2@ahku.com',
+                'password' => 'password',
             ],
             [
-                "name" => "Admin3",
-                "email" => "admin3@ahku.com",
-                "password" => "password"
+                'name' => 'Admin3',
+                'email' => 'admin3@ahku.com',
+                'password' => 'password',
             ],
             [
-                "name" => "Admin4",
-                "email" => "admin4@ahku.com",
-                "password" => "password"
-            ]
+                'name' => 'Admin4',
+                'email' => 'admin4@ahku.com',
+                'password' => 'password',
+            ],
         ])->map(function ($admin) {
-            $name = $admin["name"];
-            $email = $admin["email"];
-            $password = $admin["password"];
+            $name = $admin['name'];
+            $email = $admin['email'];
+            $password = $admin['password'];
             Artisan::call("make:filament-user --name=$name --email=$email --password=$password");
         });
     }

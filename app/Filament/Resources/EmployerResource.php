@@ -6,16 +6,11 @@ use App\Enums\SystemStatus;
 use App\Filament\Resources\EmployerResource\Pages;
 use App\Models\Employer;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EmployerResource extends Resource
 {
@@ -74,12 +69,12 @@ class EmployerResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make("system_status")
-                    ->label("SYSTEM STATUS")
+                Tables\Filters\SelectFilter::make('system_status')
+                    ->label('SYSTEM STATUS')
                     ->options([
                         SystemStatus::ACTIVE->value => SystemStatus::ACTIVE->value,
-                        SystemStatus::UNDER_PUNISHMENT->value => SystemStatus::UNDER_PUNISHMENT->value
-                    ])
+                        SystemStatus::UNDER_PUNISHMENT->value => SystemStatus::UNDER_PUNISHMENT->value,
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -100,7 +95,6 @@ class EmployerResource extends Resource
             //
         ];
     }
-
 
     public static function getPages(): array
     {
