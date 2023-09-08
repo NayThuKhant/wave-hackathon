@@ -16,27 +16,27 @@ class AdminSeeder extends Seeder
         collect([
             [
                 "name" => "Admin",
-                "email" => "admin@domesticservice.com",
+                "email" => "admin@ahku.com",
                 "password" => "password"
             ],
             [
                 "name" => "Admin1",
-                "email" => "admin1@domesticservice.com",
+                "email" => "admin1@ahku.com",
                 "password" => "password"
             ],
             [
                 "name" => "Admin2",
-                "email" => "admin2@domesticservice.com",
+                "email" => "admin2@ahku.com",
                 "password" => "password"
             ],
             [
                 "name" => "Admin3",
-                "email" => "admin3@domesticservice.com",
+                "email" => "admin3@ahku.com",
                 "password" => "password"
             ],
             [
                 "name" => "Admin4",
-                "email" => "admin4@domesticservice.com",
+                "email" => "admin4@ahku.com",
                 "password" => "password"
             ]
         ])->map(function ($admin) {
