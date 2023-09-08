@@ -2,49 +2,34 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Models\User;
+use App\Filament\Resources\AdminResource\Pages;
+use App\Filament\Resources\AdminResource\RelationManagers;
+use App\Models\Admin;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class AdminResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Admin::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-
-    // TODO User in this application won't be created from the admin panel, they have to register themselves
-    public static function canCreate(): bool
-    {
-        return array_key_exists('create', static::getPages());
-    }
-
-     // TODO Deleting a user in this application is not allowed for now
-    public static function canDelete(Model $record): bool
-    {
-        return false;
-        //return parent::canDelete($record);
-    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required()->maxLength(256)->disabled(),
-                Forms\Components\TextInput::make('email')->required()->email()->unique()->disabled()
+                Forms\Components\TextInput::make('name')->required()->maxLength(256),
+                Forms\Components\TextInput::make('email')->required()->email()->unique(),
+                Forms\Components\TextInput::make('password')->required()->password()->confirmed(),
+                Forms\Components\TextInput::make('password_confirmation')->password(),
             ]);
     }
 
-
-    /**
-     * @throws \Exception
-     */
     public static function table(Table $table): Table
     {
         return $table
@@ -73,11 +58,11 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    //Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->emptyStateActions([
-                //Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make(),
             ]);
     }
 
@@ -91,9 +76,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            //'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListAdmins::route('/'),
+            'create' => Pages\CreateAdmin::route('/create'),
+            'edit' => Pages\EditAdmin::route('/{record}/edit'),
         ];
     }
 }
