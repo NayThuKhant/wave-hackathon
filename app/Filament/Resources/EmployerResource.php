@@ -49,7 +49,7 @@ class EmployerResource extends Resource
                             TextInput::make('email')->required()->email()->disabled(),
                         ]
                     ),
-                Select::make('system_status')->options(Enum::make(SystemStatus::class)->toArray())
+                Select::make('system_status')->options(Enum::make(SystemStatus::class)->toArray()),
             ]);
     }
 

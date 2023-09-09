@@ -23,7 +23,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'country_code' => "+95",
+            'country_code' => '+95',
             'mobile_number' => fake()->unique()->numberBetween(111111111, 999999999),
             'nrc' => '12/ABC(N)123456',
             'dob' => fake()->date(),

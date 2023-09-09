@@ -7,7 +7,6 @@ use App\Enums\SystemStatus;
 use App\Filament\Resources\UserResource\Pages;
 use App\Helpers\Enum;
 use App\Models\User;
-use BladeUI\Icons\Components\Icon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -45,7 +44,6 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('country_code')->required(),
                 Forms\Components\TextInput::make('mobile_number')->required(),
                 Forms\Components\Select::make('gender')->options(Enum::make(Gender::class)->toArray()),
-
 
                 Forms\Components\Fieldset::make('Employer Profile')
                     ->relationship('employer')
