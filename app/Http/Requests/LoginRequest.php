@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class LoginRequest extends FormRequest
 {
@@ -26,7 +25,7 @@ class LoginRequest extends FormRequest
             'msisdn' => 'required',
             'name' => 'required',
             'dob' => 'required',
-            'gender' => 'required'
+            'gender' => 'required',
         ];
     }
 }

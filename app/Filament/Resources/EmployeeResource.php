@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployerResource\Pages;
-use App\Models\Employer;
-use App\Models\User;
+use App\Filament\Resources\EmployeeResource\Pages;
+use App\Models\Employee;
 use App\Traits\HasFilamentComponents;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,11 +11,11 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
-class EmployerResource extends Resource
+class EmployeeResource extends Resource
 {
     use HasFilamentComponents;
 
-    protected static ?string $model = Employer::class;
+    protected static ?string $model = Employee::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -96,9 +95,9 @@ class EmployerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEmployers::route('/'),
-            //'create' => Pages\CreateEmployer::route('/create'),
-            'edit' => Pages\EditEmployer::route('/{record}/edit'),
+            'index' => Pages\ListEmployees::route('/'),
+            //'create' => Pages\CreateEmployee::route('/create'),
+            'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
     }
 }
