@@ -2,8 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Gender;
+use App\Enums\SystemStatus;
 use App\Filament\Resources\UserResource\Pages;
+use App\Helpers\Enum;
 use App\Models\User;
+use BladeUI\Icons\Components\Icon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -34,8 +38,30 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required()->maxLength(256)->disabled(),
-                Forms\Components\TextInput::make('email')->required()->email()->unique()->disabled(),
+                Forms\Components\TextInput::make('name')->required()->maxLength(256),
+                Forms\Components\TextInput::make('email')->required()->email(),
+                Forms\Components\DatePicker::make('dob')->required(),
+                Forms\Components\TextInput::make('nrc')->required(),
+                Forms\Components\TextInput::make('country_code')->required(),
+                Forms\Components\TextInput::make('mobile_number')->required(),
+                Forms\Components\Select::make('gender')->options(Enum::make(Gender::class)->toArray()),
+
+
+                Forms\Components\Fieldset::make('Employer Profile')
+                    ->relationship('employer')
+                    ->schema(
+                        [
+                            Forms\Components\Select::make('system_status')->options(Enum::make(SystemStatus::class)->toArray()),
+                        ]
+                    ),
+
+                Forms\Components\Fieldset::make('Employee Profile')
+                    ->relationship('employee')
+                    ->schema(
+                        [
+                            Forms\Components\Select::make('system_status')->options(Enum::make(SystemStatus::class)->toArray()),
+                        ]
+                    ),
             ]);
     }
 
@@ -46,11 +72,35 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
 
+                Tables\Columns\TextColumn::make('nrc')
+                    ->searchable()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('email')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('country_code')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('mobile_number')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('dob')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('gender')
                     ->searchable()
                     ->sortable(),
 

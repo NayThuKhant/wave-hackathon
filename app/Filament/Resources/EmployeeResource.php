@@ -47,6 +47,10 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Name')
                     ->searchable()

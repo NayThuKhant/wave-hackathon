@@ -21,7 +21,7 @@ class AdminResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required()->maxLength(256),
-                Forms\Components\TextInput::make('email')->required()->email()->unique(),
+                Forms\Components\TextInput::make('email')->required()->email(),
                 Forms\Components\TextInput::make('password')->required()->password()->confirmed(),
                 Forms\Components\TextInput::make('password_confirmation')->password(),
             ]);
@@ -31,6 +31,10 @@ class AdminResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),

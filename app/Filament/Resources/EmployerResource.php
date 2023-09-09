@@ -2,10 +2,14 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\SystemStatus;
 use App\Filament\Resources\EmployerResource\Pages;
+use App\Helpers\Enum;
 use App\Models\Employer;
-use App\Models\User;
 use App\Traits\HasFilamentComponents;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -37,7 +41,15 @@ class EmployerResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Fieldset::make('User Profile')
+                    ->relationship('user')
+                    ->schema(
+                        [
+                            TextInput::make('name')->required()->maxLength(256)->disabled(),
+                            TextInput::make('email')->required()->email()->disabled(),
+                        ]
+                    ),
+                Select::make('system_status')->options(Enum::make(SystemStatus::class)->toArray())
             ]);
     }
 
@@ -48,6 +60,10 @@ class EmployerResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Name')
                     ->searchable()
