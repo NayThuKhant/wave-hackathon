@@ -39,7 +39,7 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->required()->maxLength(256),
                 Forms\Components\TextInput::make('email')->required()->email(),
-                Forms\Components\DatePicker::make('dob')->required(),
+                Forms\Components\DatePicker::make('dob')->label('Date Of Birth')->required(),
                 Forms\Components\TextInput::make('nrc')->required(),
                 Forms\Components\TextInput::make('country_code')->required(),
                 Forms\Components\TextInput::make('mobile_number')->required(),
@@ -95,6 +95,7 @@ class UserResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('dob')
+                    ->label('Date of Birth')
                     ->searchable()
                     ->sortable(),
 

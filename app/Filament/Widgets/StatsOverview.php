@@ -2,7 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Enums\SystemStatus;
 use App\Models\Admin;
+use App\Models\Employee;
+use App\Models\Employer;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -17,8 +20,10 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            $this->buildUsersStat(),
             $this->buildAdminsStat(),
+            $this->buildUsersStat(),
+            $this->buildEmployersStat(),
+            $this->buildEmployeesStat(),
         ];
     }
 
@@ -73,5 +78,49 @@ class StatsOverview extends BaseWidget
             ->descriptionIcon($descriptionIcon)
             ->chart($userChart)
             ->color('success');
+    }
+
+    private function buildEmployersStat(): Stat
+    {
+        $registeredEmployers = Employer::select(['created_at', 'system_status'])->get();
+        $activeEmployers = $registeredEmployers->where('system_status', SystemStatus::ACTIVE->value)->count();
+        $employersUnderPunishment = $registeredEmployers->where('system_status', SystemStatus::UNDER_PUNISHMENT->value)->count();
+
+        $totalEmployers = $registeredEmployers->count();
+        $employerChart = $registeredEmployers->groupBy(function ($employer) {
+            $intervalMinutes = floor($employer->created_at->diffInMinutes(now()) / 5) * 5;
+
+            return sprintf('%02d:%02d', $intervalMinutes / 60, $intervalMinutes % 60);
+        })->map(function ($item) {
+            return $item->count();
+        })->values()->toArray();
+
+        return Stat::make('Total Employers', $totalEmployers)
+            ->icon('heroicon-o-user-group')
+            // TODO - change with actual raising or falling icon, also description and color
+            ->description("ACTIVE - $activeEmployers | UNDER PUNISHMENT - $employersUnderPunishment")
+            ->chart($employerChart);
+    }
+
+    private function buildEmployeesStat(): Stat
+    {
+        $registeredEmployees = Employee::select(['created_at', 'system_status'])->get();
+        $activeEmployees = $registeredEmployees->where('system_status', SystemStatus::ACTIVE->value)->count();
+        $employeesUnderPunishment = $registeredEmployees->where('system_status', SystemStatus::UNDER_PUNISHMENT->value)->count();
+
+        $totalEmployees = $registeredEmployees->count();
+        $employerChart = $registeredEmployees->groupBy(function ($employer) {
+            $intervalMinutes = floor($employer->created_at->diffInMinutes(now()) / 5) * 5;
+
+            return sprintf('%02d:%02d', $intervalMinutes / 60, $intervalMinutes % 60);
+        })->map(function ($item) {
+            return $item->count();
+        })->values()->toArray();
+
+        return Stat::make('Total Employees', $totalEmployees)
+            ->icon('heroicon-o-user-group')
+            // TODO - change with actual raising or falling icon, also description and color
+            ->description("ACTIVE - $activeEmployees | UNDER PUNISHMENT - $employeesUnderPunishment")
+            ->chart($employerChart);
     }
 }
