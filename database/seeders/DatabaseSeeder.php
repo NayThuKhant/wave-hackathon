@@ -8,6 +8,7 @@ use App\Models\Address;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Employer;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Artisan::call("passport:install");
+        Artisan::call('passport:install');
 
         Artisan::call('passport:client', [
             '--personal' => true,
@@ -34,6 +35,27 @@ class DatabaseSeeder extends Seeder
             ->has(Employer::factory()->count(1))
             ->has(Address::factory()->count(2))
             ->create();
+
+        Order::factory()->count(100)->state(function () {
+            return [
+                'employer_id' => rand(1, 100),
+                'employee_id' => rand(1, 100),
+            ];
+        })->create();
+
+        Order::factory()->count(10)->state(function () {
+            return [
+                'employer_id' => 1,
+                'employee_id' => 2,
+            ];
+        })->create();
+
+        Order::factory()->count(10)->state(function () {
+            return [
+                'employer_id' => 2,
+                'employee_id' => 1,
+            ];
+        })->create();
 
         $category = Category::create([
             'name' => 'Household Services',

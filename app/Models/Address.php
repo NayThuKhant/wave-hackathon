@@ -10,7 +10,7 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["user_id", "floor", "street", "township", "city"];
+    protected $fillable = ['user_id', 'floor', 'street', 'township', 'city'];
 
     public function user(): BelongsTo
     {

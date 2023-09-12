@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateAddressRequest extends FormRequest
+class StoreAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,10 @@ class CreateAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "floor" => "required|string|max:256",
-            "street" => "required|string|max:256",
-            "township" => "required|string|max:256",
-            "city" => "required|string|max:256"
+            'floor' => 'required|string|max:256',
+            'street' => 'required|string|max:256',
+            'township' => 'required|string|max:256',
+            'city' => 'required|string|max:256',
         ];
     }
 }
