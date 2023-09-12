@@ -10,7 +10,6 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        //        dd($request->all());
         $user = User::firstOrCreate(
             ['mobile_number' => $request->msisdn],
             [
@@ -20,6 +19,8 @@ class AuthController extends Controller
                 'gender' => $request->gender,
             ]
         );
+
+        $user->employer()->firstOrCreate();
 
         // TODO : Check User's KYC Status
         $token = $user->createToken('auth_token')->accessToken;

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Enums\PricingModel;
+use App\Models\Address;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Employer;
@@ -19,6 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Artisan::call("passport:install");
+
         Artisan::call('passport:client', [
             '--personal' => true,
             '--name' => Str::upper(config('app.name')),
@@ -29,6 +32,7 @@ class DatabaseSeeder extends Seeder
         User::factory(100)
             ->has(Employee::factory()->count(1))
             ->has(Employer::factory()->count(1))
+            ->has(Address::factory()->count(2))
             ->create();
 
         $category = Category::create([
