@@ -65,10 +65,12 @@ class DatabaseSeeder extends Seeder
         $category->services()->createMany([
             [
                 'name' => 'House Cleaning',
+                'price' => 3000,
                 'pricing_model' => PricingModel::PER_HOUR->value,
             ],
             [
                 'name' => 'Garden Maintenance',
+                'price' => 4000,
                 'pricing_model' => PricingModel::PER_HOUR->value,
             ],
         ]);
@@ -80,13 +82,39 @@ class DatabaseSeeder extends Seeder
 
         $category->services()->createMany([
             [
-                'name' => 'White Laundry',
+                'name' => 'T-shirt',
+                'price' => 300,
                 'pricing_model' => PricingModel::PER_ITEM->value,
             ],
             [
-                'name' => 'Colored Laundry',
+                'name' => 'Shirt',
+                'price' => 300,
+                'pricing_model' => PricingModel::PER_ITEM->value,
+            ],
+            [
+                'name' => 'Coat/Hoodie',
+                'price' => 400,
+                'pricing_model' => PricingModel::PER_ITEM->value,
+            ],
+            [
+                'name' => 'Long Pant',
+                'price' => 400,
+                'pricing_model' => PricingModel::PER_ITEM->value,
+            ],
+            [
+                'name' => 'Short Pant',
+                'price' => 300,
+                'pricing_model' => PricingModel::PER_ITEM->value,
+            ],
+            [
+                'name' => 'Undergarment',
+                'price' => 100,
                 'pricing_model' => PricingModel::PER_ITEM->value,
             ],
         ]);
+
+        User::take(10)->each(function (User $user) {
+            $user->categories()->sync([1, 2]);
+        });
     }
 }
