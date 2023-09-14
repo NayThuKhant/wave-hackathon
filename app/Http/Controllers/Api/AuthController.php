@@ -25,6 +25,8 @@ class AuthController extends Controller
         // TODO : Check User's KYC Status
         $token = $user->createToken('auth_token')->accessToken;
 
+        $user->load('employee', 'employer', 'categories');
+
         return response()->json(['token' => $token, 'user' => $user], 200);
     }
 }
