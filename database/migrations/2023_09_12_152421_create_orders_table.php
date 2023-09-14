@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('address');
             $table->foreignId('employer_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('employee_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('category_id');
             $table->string('status')->default(OrderStatus::ORDERED->value);
             $table->string('started_at');
             $table->integer('rating');
