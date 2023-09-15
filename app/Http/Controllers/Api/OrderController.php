@@ -25,7 +25,7 @@ class OrderController extends Controller
             }
 
             $order = Order::create([
-                'address' => $address->floor.', '.$address->street.', '.$address->township.', '.$address->city,
+                'address' => $address->floor . ', ' . $address->street . ', ' . $address->township . ', ' . $address->city,
                 'employee_id' => $request->employee_id,
                 'category_id' => $request->category_id,
                 'started_at' => $request->started_at,
@@ -41,7 +41,7 @@ class OrderController extends Controller
                 'data' => $order->load('services'),
             ]);
         } catch (Exception $exception) {
-            Log::error('Something went wrong in OrderController@store: '.$exception);
+            Log::error('Something went wrong in OrderController@store: ' . $exception);
             DB::rollBack();
 
             return response()->json([
@@ -53,12 +53,32 @@ class OrderController extends Controller
 
     public function index()
     {
+        $orders = Order::where('employee_id', Auth::id())->orWhere("employer_id", Auth::id())
+            ->with('category', 'employee', 'services')
+            ->get();
+
+        $orders = $orders
+            ->map(function ($order) {
+                $order->services->each(function ($service) use ($order) {
+                    $order->total_price += $service->price * $service->pivot->quantity;
+                });
+                return $order;
+            });
+
         return response()->json([
             'message' => 'Orders have been retrieved.',
             'data' => [
-                'orders' => Order::where('employee_id', Auth::id())->with('category', 'employee')->get(),
-                'offers' => Order::where('employer_id', Auth::id())->with('category', 'employer')->get(),
-            ],
+                'services' => $orders->filter(function (Order $order){return $order->employee_id != Auth::id(); }),
+                'offers' => $orders->filter(function (Order $order){return $order->employee_id != Auth::id(); }),
+            ]
+        ]);
+    }
+
+    public function show(Order $order)
+    {
+        return response()->json([
+            'message' => 'Order has been retrieved.',
+            'data' => $order->load('services'),
         ]);
     }
 

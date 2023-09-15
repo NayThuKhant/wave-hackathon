@@ -14,6 +14,7 @@ class EmployeeController extends Controller
             'data' => User::join('employees', 'users.id', 'employees.user_id')
                 ->where('employees.system_status', SystemStatus::ACTIVE)
                 ->select(['users.id as id', 'users.name', 'users.email', 'users.mobile_number'])
+                ->with("categories")
                 ->get(),
         ]);
     }
