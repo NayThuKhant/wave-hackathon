@@ -55,17 +55,10 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::where('employee_id', Auth::id())->orWhere('employer_id', Auth::id())
-            ->with('category', 'employee', 'services')
+            ->with('category', 'employee', "employer", 'services')
             ->get();
 
-        $orders = $orders
-            ->map(function ($order) {
-                $order->services->each(function ($service) use ($order) {
-                    $order->total_price += $service->price * $service->pivot->quantity;
-                });
-
-                return $order;
-            });
+        $orders = $orders->map(function ($order) {$order->services->each(function ($service) use ($order) {$order->total_price += $service->price * $service->pivot->quantity;});return $order;});
 
         return response()->json([
             'message' => 'Orders have been retrieved.',
@@ -74,7 +67,7 @@ class OrderController extends Controller
                     return $order->employee_id != Auth::id();
                 }),
                 'offers' => $orders->filter(function (Order $order) {
-                    return $order->employee_id != Auth::id();
+                    return $order->employer_id != Auth::id();
                 }),
             ],
         ]);
