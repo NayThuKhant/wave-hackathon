@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
         })->create();
 
         $category = Category::create([
-            'name' => 'Household Services',
+            'name' => 'Household',
             'description' => 'Household services are services provided by professional domestic workers.',
         ]);
 
@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $category = Category::create([
-            'name' => 'Laundry Services',
+            'name' => 'Laundry',
             'description' => 'Laundry services are services provided by professional domestic workers.',
         ]);
 
