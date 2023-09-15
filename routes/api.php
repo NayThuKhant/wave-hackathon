@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,4 +31,6 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::resource('orders', OrderController::class)->only(['index', 'store', 'show']);
 
     Route::resource('categories', CategoryController::class)->only(['index', 'show']);
+
+    Route::resource('employees', EmployeeController::class)->only(['index', 'show']);
 });

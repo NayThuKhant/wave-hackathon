@@ -23,7 +23,8 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            '',
+            "employee_id" => "nullable|exists:users,id",
+            "started_at" => "required|date|date_format:Y-m-d H:i:s",
         ];
     }
 }
