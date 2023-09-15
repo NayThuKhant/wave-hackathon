@@ -20,7 +20,7 @@ class OrderFactory extends Factory
             'employee_id' => $this->faker->randomNumber(),
             'status' => Enum::make(SystemStatus::class)->collection()->random(),
             'started_at' => Carbon::now()->addDay(),
-            'rating' => $this->faker->randomNumber(),
+            'rating' => array_rand([1, 2, 3, 4, 5]),
             'feedback' => $this->faker->word(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

@@ -15,6 +15,7 @@
         "laravel/framework": "^10.10",
         "laravel/passport": "^11.9",
         "laravel/sanctum": "^3.2",
+        "laravel/telescope": "^4.16",
         "laravel/tinker": "^2.8"
     },
     "require-dev": {
@@ -57,7 +58,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "config": {

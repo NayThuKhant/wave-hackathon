@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth:user'], function () {
 
     Route::resource('orders', OrderController::class)->only(['index', 'store', 'show']);
     Route::put('orders/{order}/status', [OrderController::class, 'updateStatus']);
+    Route::post('orders/{order}/ratings', [OrderController::class, 'giveRatings']);
 
     Route::resource('categories', CategoryController::class)->only(['index', 'show']);
 

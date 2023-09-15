@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\GiveRatingRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderStatusRequest;
 use App\Models\Address;
@@ -25,7 +26,7 @@ class OrderController extends Controller
             }
 
             $order = Order::create([
-                'address' => $address->floor . ', ' . $address->street . ', ' . $address->township . ', ' . $address->city,
+                'address' => $address->floor.', '.$address->street.', '.$address->township.', '.$address->city,
                 'employee_id' => $request->employee_id,
                 'category_id' => $request->category_id,
                 'started_at' => $request->started_at,
@@ -41,7 +42,7 @@ class OrderController extends Controller
                 'data' => $order->load('services'),
             ]);
         } catch (Exception $exception) {
-            Log::error('Something went wrong in OrderController@store: ' . $exception);
+            Log::error('Something went wrong in OrderController@store: '.$exception);
             DB::rollBack();
 
             return response()->json([
@@ -53,7 +54,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::where('employee_id', Auth::id())->orWhere("employer_id", Auth::id())
+        $orders = Order::where('employee_id', Auth::id())->orWhere('employer_id', Auth::id())
             ->with('category', 'employee', 'services')
             ->get();
 
@@ -62,15 +63,20 @@ class OrderController extends Controller
                 $order->services->each(function ($service) use ($order) {
                     $order->total_price += $service->price * $service->pivot->quantity;
                 });
+
                 return $order;
             });
 
         return response()->json([
             'message' => 'Orders have been retrieved.',
             'data' => [
-                'services' => $orders->filter(function (Order $order){return $order->employee_id != Auth::id(); }),
-                'offers' => $orders->filter(function (Order $order){return $order->employee_id != Auth::id(); }),
-            ]
+                'services' => $orders->filter(function (Order $order) {
+                    return $order->employee_id != Auth::id();
+                }),
+                'offers' => $orders->filter(function (Order $order) {
+                    return $order->employee_id != Auth::id();
+                }),
+            ],
         ]);
     }
 
@@ -91,6 +97,19 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order status has been updated.',
+            'data' => $order->load('services'),
+        ]);
+    }
+
+    public function giveRatings(Order $order, GiveRatingRequest $request)
+    {
+        $order->update([
+            'rating' => $request->rating,
+            'feedback' => $request->feedback,
+        ]);
+
+        return response()->json([
+            'message' => 'Ratings have been given.',
             'data' => $order->load('services'),
         ]);
     }
