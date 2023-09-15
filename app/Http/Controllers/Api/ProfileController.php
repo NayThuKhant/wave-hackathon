@@ -13,7 +13,7 @@ class ProfileController extends Controller
     {
         return response()->json([
             'message' => 'Profile information has been successfully retrieved.',
-            'data' => User::with('employee', 'employer', 'categories')->find(Auth::id()),
+            'data' => User::with('employee', 'employer', 'categories', 'addresses')->find(Auth::id()),
         ]);
     }
 

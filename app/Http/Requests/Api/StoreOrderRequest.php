@@ -23,8 +23,18 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "employee_id" => "nullable|exists:users,id",
-            "started_at" => "required|date|date_format:Y-m-d H:i:s",
+            'employee_id' => 'nullable|exists:users,id',
+            'category_id' => 'required|exists:categories,id',
+            'started_at' => 'required|date|date_format:Y-m-d H:i:s',
+            'address_id' => 'nullable|exists:addresses,id',
+            'address' => 'nullable|required_without:address_id',
+            'address.floor' => 'nullable|required_without:address_id',
+            'address.street' => 'nullable|required_without:address_id',
+            'address.township' => 'nullable|required_without:address_id',
+            'address.city' => 'nullable|required_without:address_id',
+            'services' => 'required|array|min:1',
+            'services.*.service_id' => 'required|exists:services,id',
+            'services.*.quantity' => 'required|integer|min:1',
         ];
     }
 }

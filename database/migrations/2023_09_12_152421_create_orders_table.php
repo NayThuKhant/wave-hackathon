@@ -16,12 +16,12 @@ return new class extends Migration
             $table->id();
             $table->string('address');
             $table->foreignId('employer_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('employee_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('employee_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->foreignId('category_id');
             $table->string('status')->default(OrderStatus::ORDERED->value);
             $table->string('started_at');
-            $table->integer('rating');
-            $table->longText('feedback');
+            $table->integer('rating')->nullable();
+            $table->longText('feedback')->nullable();
             $table->timestamps();
         });
     }

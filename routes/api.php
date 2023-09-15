@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::resource('addresses', AddressController::class)->only(['index', 'store']);
 
     Route::resource('orders', OrderController::class)->only(['index', 'store', 'show']);
+    Route::put('orders/{order}/status', [OrderController::class, 'updateStatus']);
 
     Route::resource('categories', CategoryController::class)->only(['index', 'show']);
 

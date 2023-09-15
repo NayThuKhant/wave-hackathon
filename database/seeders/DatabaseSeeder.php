@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             return [
                 'employer_id' => rand(1, 100),
                 'employee_id' => rand(1, 100),
-                'category_id' => rand(1,2)
+                'category_id' => rand(1, 2),
             ];
         })->create();
 
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             return [
                 'employer_id' => 1,
                 'employee_id' => 2,
-                'category_id' => rand(1,2)
+                'category_id' => rand(1, 2),
             ];
         })->create();
 
@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
             return [
                 'employer_id' => 2,
                 'employee_id' => 1,
-                'category_id' => rand(1,2)
+                'category_id' => rand(1, 2),
             ];
         })->create();
 
