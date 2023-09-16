@@ -13,15 +13,17 @@ class EmployeeController extends Controller
             ->where('employees.system_status', SystemStatus::ACTIVE)
             ->select(['users.id as id', 'users.name', 'users.email', 'users.mobile_number', 'users.gender'])
             ->with('categories', 'orders')
+            ->where("employees.system_status", SystemStatus::ACTIVE->value)
+            ->distinct()
             ->get()
             ->map(function ($employee) {
                 $orderCount = $employee->orders->count();
                 if (!$orderCount) {
-                    $employee->rating = 0;
+                    $employee->rating = 0.0;
                     return $employee;
                 }
 
-                $employee->rating = $employee->orders->sum('rating') / $orderCount;
+                $employee->rating = number_format($employee->orders->sum('rating') / $orderCount, 2);
                 return $employee;
             })->sortByDesc('rating')
         ->values();
