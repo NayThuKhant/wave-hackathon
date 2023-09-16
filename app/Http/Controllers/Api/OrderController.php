@@ -100,7 +100,6 @@ class OrderController extends Controller
 
     public function updateStatus(UpdateOrderStatusRequest $request, Order $order)
     {
-
         $order->update([
             'status' => $request->status,
         ]);

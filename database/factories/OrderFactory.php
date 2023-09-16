@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\SystemStatus;
+use App\Enums\OrderStatus;
 use App\Helpers\Enum;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,7 +19,7 @@ class OrderFactory extends Factory
             'address' => $this->faker->address(),
             'employer_id' => $this->faker->randomNumber(),
             'employee_id' => $this->faker->randomNumber(),
-            'status' => Enum::make(SystemStatus::class)->collection()->random(),
+            'status' => Enum::make(OrderStatus::class)->collection()->random(),
             'started_at' => Carbon::now()->addDay(),
             'rating' => array_rand([1, 2, 3, 4, 5]) + 1,
             'feedback' => $this->faker->word(),

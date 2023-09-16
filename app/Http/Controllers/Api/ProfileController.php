@@ -11,9 +11,24 @@ class ProfileController extends Controller
 {
     public function me()
     {
+        $user = User::with('employee', 'employer', 'categories', 'addresses')->find(Auth::id());
+
+        $onHoldBalance = 0;
+        $user->orders()
+            ->with('services')
+            ->where('orders.status', 'COMPLETED')
+            ->get()
+            ->each(function ($order) use (&$onHoldBalance) {
+                $services = $order["services"];
+                $services->each(function ($service) use (&$onHoldBalance) {
+                    $onHoldBalance += $service->toArray()["pivot"]["quantity"] * $service["price"];
+                });
+            });
+        $user->on_hold_balance = $onHoldBalance;
+
         return response()->json([
             'message' => 'Profile information has been successfully retrieved.',
-            'data' => User::with('employee', 'employer', 'categories', 'addresses')->find(Auth::id()),
+            'data' => $user,
         ]);
     }
 
