@@ -22,7 +22,7 @@ class OrderController extends Controller
             if ($request->get('address_id')) {
                 $address = Address::find($request->address_id);
             } else {
-                $address = Address::create([
+                $address = Address::updateOrCreate([
                     'user_id' => Auth::id(),
                     'floor' => $request->address['floor'],
                     'street' => $request->address['street'],
