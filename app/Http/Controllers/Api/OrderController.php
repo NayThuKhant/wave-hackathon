@@ -46,7 +46,6 @@ class OrderController extends Controller
                 ];
             })->toArray();
 
-            info($services);
             $order->services()->sync($services);
 
             DB::commit();
