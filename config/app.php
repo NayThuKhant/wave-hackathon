@@ -187,4 +187,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    "platform_fee_percentage" => env('PLATFORM_FEE_PERCENTAGE', 10),
 ];

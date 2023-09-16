@@ -56,8 +56,8 @@ class User extends Authenticatable
     protected function gender(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Str::upper($value),
-            set: fn ($value) => Str::upper($value),
+            get: fn($value) => Str::upper($value),
+            set: fn($value) => Str::upper($value),
         );
     }
 
