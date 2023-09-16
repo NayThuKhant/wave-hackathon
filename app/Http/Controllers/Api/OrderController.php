@@ -81,10 +81,10 @@ class OrderController extends Controller
             'message' => 'Orders have been retrieved.',
             'data' => [
                 'services' => $orders->filter(function (Order $order) {
-                    return $order->employee_id != Auth::id();
+                    return $order->employee_id == Auth::id();
                 })->values(),
                 'offers' => $orders->filter(function (Order $order) {
-                    return $order->employer_id != Auth::id();
+                    return $order->employer_id == Auth::id();
                 })->values(),
             ],
         ]);
