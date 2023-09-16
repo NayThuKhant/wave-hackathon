@@ -55,6 +55,18 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::where('employee_id', Auth::id())->orWhere('employer_id', Auth::id())
+            ->orderByRaw("CASE
+                        WHEN orders.status = 'ORDERED' THEN 1
+                        WHEN orders.status = 'OFFERED' THEN 2
+                        WHEN orders.status = 'ACCEPTED' THEN 3
+                        WHEN orders.status = 'PAID' THEN 4
+                        WHEN orders.status = 'IN_PROGRESS' THEN 5
+                        WHEN orders.status = 'COMPLETED' THEN 6
+                        WHEN orders.status = 'CANCELLED_BY_EMPLOYER' THEN 7
+                        WHEN orders.status = 'CANCELLED_BY_SYSTEM' THEN 8
+                    ELSE 9
+            END")
+            ->orderBy('created_at', 'desc')
             ->with('category', 'employee', "employer", 'services')
             ->get();
 
