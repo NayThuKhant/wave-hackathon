@@ -141,6 +141,20 @@ class OrderController extends Controller
             'status' => $request->status,
         ]);
 
+        $order->load(['services', 'employee', 'employer']);
+        $totalPrice = 0;
+        $order->services->each(function ($service) use (&$totalPrice, $order) {
+            $totalPrice += $service->price * $service->pivot->quantity;
+        });
+
+        if ($order->employee_id === Auth::id()) {
+            $order->total_price = $totalPrice - (config("app.platform_fee_percentage") / 100 * $totalPrice);
+            $order->contact = User::find($order->employer_id);
+        } else {
+            $order->contact = User::find($order->employee_id);
+            $order->total_price = $totalPrice;
+        }
+
         return response()->json([
             'message' => 'Order status has been updated.',
             'data' => $order->load('services'),
