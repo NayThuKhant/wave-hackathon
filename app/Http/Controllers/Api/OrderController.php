@@ -40,6 +40,7 @@ class OrderController extends Controller
                 'category_id' => $request->category_id,
                 'started_at' => $request->started_at,
                 'employer_id' => Auth::id(),
+                'status' => $request->employee_id ? OrderStatus::OFFERED->value : OrderStatus::ORDERED->value,
             ]);
 
             $services = collect($request->services)->map(function ($service) {
@@ -50,12 +51,6 @@ class OrderController extends Controller
             })->toArray();
 
             $order->services()->sync($services);
-
-            if ($order->employee_id)  {
-                $order->update(["status" => OrderStatus::OFFERED->value]);
-            } else  {
-                AssignEmployeeJob::dispatch($order);
-            }
 
             DB::commit();
 
