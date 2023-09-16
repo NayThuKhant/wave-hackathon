@@ -8,6 +8,7 @@ use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderStatusRequest;
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -116,7 +117,13 @@ class OrderController extends Controller
             $totalPrice += $service->price * $service->pivot->quantity;
         });
 
-        $order->total_price = $totalPrice - (config("app.platform_fee_percentage") / 100 * $totalPrice);
+        if ($order->employee_id === Auth::id()) {
+            $order->total_price = $totalPrice - (config("app.platform_fee_percentage") / 100 * $totalPrice);
+            $order->contact = User::find($order->employer_id);
+        } else {
+            $order->contact = User::find($order->employee_id);
+            $order->total_price = $totalPrice;
+        }
 
         return response()->json([
             'message' => 'Order has been retrieved.',
