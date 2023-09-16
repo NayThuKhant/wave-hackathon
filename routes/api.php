@@ -28,8 +28,12 @@ Route::group(['middleware' => 'auth:user'], function () {
 
     Route::resource('addresses', AddressController::class)->only(['index', 'store']);
 
-    Route::resource('orders', OrderController::class)->only(['index', 'store', 'show']);
+    // TODO just dummy routes and not a good practices
     Route::put('orders/{order}/status', [OrderController::class, 'updateStatus']);
+    Route::put("orders/{order}/assign", [OrderController::class, "assignEmployee"]);
+    // TODO just dummy routes and not a good practices
+
+    Route::resource('orders', OrderController::class)->only(['index', 'store', 'show']);
     Route::post('orders/{order}/ratings', [OrderController::class, 'giveRatings']);
 
     Route::resource('categories', CategoryController::class)->only(['index', 'show']);

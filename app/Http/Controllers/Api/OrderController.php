@@ -9,6 +9,7 @@ use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderStatusRequest;
 use App\Jobs\AssignEmployeeJob;
 use App\Models\Address;
+use App\Models\Employee;
 use App\Models\Order;
 use App\Models\User;
 use Exception;
@@ -156,6 +157,36 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'Ratings have been given.',
             'data' => $order->load('services'),
+        ]);
+    }
+
+    //TODO dummy function
+    public function assignEmployee(Order $order)
+    {
+        $employeeId = User::where("mobile_number", "9784489866")->first();
+
+        $order->update([
+            'employee_id' => $employeeId->id,
+            'status' => OrderStatus::OFFERED->value,
+        ]);
+
+        $order->load(['services', 'employee', 'employer']);
+        $totalPrice = 0;
+        $order->services->each(function ($service) use (&$totalPrice, $order) {
+            $totalPrice += $service->price * $service->pivot->quantity;
+        });
+
+        if ($order->employee_id === Auth::id()) {
+            $order->total_price = $totalPrice - (config("app.platform_fee_percentage") / 100 * $totalPrice);
+            $order->contact = User::find($order->employer_id);
+        } else {
+            $order->contact = User::find($order->employee_id);
+            $order->total_price = $totalPrice;
+        }
+
+        return response()->json([
+            'message' => 'Order status has been changed to OFFERED.',
+            'data' => $order,
         ]);
     }
 }
