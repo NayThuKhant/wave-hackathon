@@ -32,7 +32,7 @@ class OrderController extends Controller
             }
 
             $order = Order::create([
-                'address' => $address->floor.', '.$address->street.', '.$address->township.', '.$address->city,
+                'address' => $address->floor . ', ' . $address->street . ', ' . $address->township . ', ' . $address->city,
                 'employee_id' => $request->employee_id,
                 'category_id' => $request->category_id,
                 'started_at' => $request->started_at,
@@ -55,7 +55,7 @@ class OrderController extends Controller
                 'data' => $order->load('services'),
             ]);
         } catch (Exception $exception) {
-            Log::error('Something went wrong in OrderController@store: '.$exception);
+            Log::error('Something went wrong in OrderController@store: ' . $exception);
             DB::rollBack();
 
             return response()->json([
@@ -88,6 +88,10 @@ class OrderController extends Controller
                 $order->total_price += $service->price * $service->pivot->quantity;
             });
 
+            if ($order->employee_id == Auth::id()) {
+                $order->total_price = $order->total_price - (config("app.platform_fee_percentage") / 100 * $order->total_price);
+            }
+
             return $order;
         });
 
@@ -106,9 +110,17 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
+        $order = $order->load(['services', 'employee', 'employer']);
+        $totalPrice = 0;
+        $order->services->each(function ($service) use (&$totalPrice, $order) {
+            $totalPrice += $service->price * $service->pivot->quantity;
+        });
+
+        $order->total_price = $totalPrice - (config("app.platform_fee_percentage") / 100 * $totalPrice);
+
         return response()->json([
             'message' => 'Order has been retrieved.',
-            'data' => $order->load(['services', 'employee', 'employer']),
+            'data' => $order,
         ]);
     }
 

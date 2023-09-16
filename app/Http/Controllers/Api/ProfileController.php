@@ -26,7 +26,7 @@ class ProfileController extends Controller
                 });
             });
 
-        $user->on_hold_balance = (config("app.platform_fee_percentage") / 100 * $onHoldBalance);
+        $user->on_hold_balance = $onHoldBalance - (config("app.platform_fee_percentage") / 100 * $onHoldBalance);
 
         return response()->json([
             'message' => 'Profile information has been successfully retrieved.',
