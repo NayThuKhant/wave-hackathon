@@ -19,21 +19,35 @@ class OrderController extends Controller
     {
         DB::beginTransaction();
         try {
-            if ($request->has('address_id')) {
+            if ($request->get('address_id')) {
                 $address = Address::find($request->address_id);
             } else {
-                $address = Address::create([...$request->address, 'user_id' => Auth::id()]);
+                $address = Address::create([
+                    'user_id' => Auth::id(),
+                    'floor' => $request->address['floor'],
+                    'street' => $request->address['street'],
+                    'township' => $request->address['township'],
+                    'city' => $request->address['city'],
+                ]);
             }
 
             $order = Order::create([
-                'address' => $address->floor . ', ' . $address->street . ', ' . $address->township . ', ' . $address->city,
+                'address' => $address->floor.', '.$address->street.', '.$address->township.', '.$address->city,
                 'employee_id' => $request->employee_id,
                 'category_id' => $request->category_id,
                 'started_at' => $request->started_at,
                 'employer_id' => Auth::id(),
             ]);
 
-            $order->services()->sync($request->services);
+            $services = collect($request->services)->map(function ($service) {
+                return [
+                    'quantity' => $service['quantity'],
+                    'service_id' => $service['service_id'],
+                ];
+            })->toArray();
+
+            info($services);
+            $order->services()->sync($services);
 
             DB::commit();
 
@@ -42,13 +56,13 @@ class OrderController extends Controller
                 'data' => $order->load('services'),
             ]);
         } catch (Exception $exception) {
-            Log::error('Something went wrong in OrderController@store: ' . $exception);
+            Log::error('Something went wrong in OrderController@store: '.$exception);
             DB::rollBack();
 
             return response()->json([
                 'message' => 'Something went wrong',
                 'data' => $exception,
-            ]);
+            ], 500);
         }
     }
 
@@ -67,13 +81,14 @@ class OrderController extends Controller
                     ELSE 9
             END")
             ->orderBy('created_at', 'desc')
-            ->with('category', 'employee', "employer", 'services')
+            ->with('category', 'employee', 'employer', 'services')
             ->get();
 
         $orders = $orders->map(function ($order) {
             $order->services->each(function ($service) use ($order) {
                 $order->total_price += $service->price * $service->pivot->quantity;
             });
+
             return $order;
         });
 
@@ -94,7 +109,7 @@ class OrderController extends Controller
     {
         return response()->json([
             'message' => 'Order has been retrieved.',
-            'data' => $order->load('services'),
+            'data' => $order->load(['services', 'employee', 'employer']),
         ]);
     }
 

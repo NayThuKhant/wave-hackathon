@@ -19,9 +19,9 @@ class ProfileController extends Controller
             ->where('orders.status', 'COMPLETED')
             ->get()
             ->each(function ($order) use (&$onHoldBalance) {
-                $services = $order["services"];
+                $services = $order['services'];
                 $services->each(function ($service) use (&$onHoldBalance) {
-                    $onHoldBalance += $service->toArray()["pivot"]["quantity"] * $service["price"];
+                    $onHoldBalance += $service->toArray()['pivot']['quantity'] * $service['price'];
                 });
             });
         $user->on_hold_balance = $onHoldBalance;

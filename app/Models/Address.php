@@ -18,7 +18,7 @@ class Address extends Model
     protected function fullAddress(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => "$this->floor, $this->street, $this->township, $this->city",
+            get: fn ($value) => "$this->floor, $this->street, $this->township, $this->city",
         );
     }
 
