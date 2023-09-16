@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\GiveRatingRequest;
 use App\Http\Requests\Api\StoreOrderRequest;
 use App\Http\Requests\Api\UpdateOrderStatusRequest;
+use App\Jobs\AssignEmployeeJob;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\User;
@@ -48,6 +50,12 @@ class OrderController extends Controller
             })->toArray();
 
             $order->services()->sync($services);
+
+            if ($order->employee_id)  {
+                $order->update(["status" => OrderStatus::OFFERED->value]);
+            } else  {
+                AssignEmployeeJob::dispatch($order);
+            }
 
             DB::commit();
 
