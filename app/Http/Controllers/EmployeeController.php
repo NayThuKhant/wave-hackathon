@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\SystemStatus;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -14,6 +15,7 @@ class EmployeeController extends Controller
             ->select(['users.id as id', 'users.name', 'users.email', 'users.mobile_number', 'users.gender'])
             ->with('categories', 'orders')
             ->where('employees.system_status', SystemStatus::ACTIVE->value)
+            ->whereNot('users.id', Auth::id())
             ->distinct()
             ->get()
             ->map(function ($employee) {
