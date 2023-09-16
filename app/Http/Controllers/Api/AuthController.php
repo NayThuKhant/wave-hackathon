@@ -27,6 +27,20 @@ class AuthController extends Controller
 
         $user->load('employee', 'employer', 'categories');
 
+        $onHoldBalance = 0;
+        $user->orders()
+            ->with('services')
+            ->where('orders.status', 'COMPLETED')
+            ->get()
+            ->each(function ($order) use (&$onHoldBalance) {
+                $services = $order['services'];
+                $services->each(function ($service) use (&$onHoldBalance) {
+                    $onHoldBalance += $service->toArray()['pivot']['quantity'] * $service['price'];
+                });
+            });
+
+        $user->on_hold_balance = $onHoldBalance - (config("app.platform_fee_percentage") / 100 * $onHoldBalance);
+
         return response()->json(['token' => $token, 'user' => $user], 200);
     }
 }
