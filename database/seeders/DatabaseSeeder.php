@@ -114,6 +114,11 @@ class DatabaseSeeder extends Seeder
                 'price' => 100,
                 'pricing_model' => PricingModel::PER_ITEM->value,
             ],
+            [
+                'name' => 'Insufficient Balance',
+                'price' => 10000000,
+                'pricing_model' => PricingModel::PER_ITEM->value,
+            ],
         ]);
 
         User::take(10)->each(function (User $user) {
