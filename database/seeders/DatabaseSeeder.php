@@ -116,7 +116,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Insufficient Balance',
-                'price' => 10000000,
+                'price' => 100000,
                 'pricing_model' => PricingModel::PER_ITEM->value,
             ],
         ]);
