@@ -178,6 +178,9 @@ class OrderController extends Controller
     public function assignEmployee(Order $order)
     {
         $employeeId = User::where("mobile_number", "9786290165")->first();
+        if (!$employeeId) {
+            $employeeId = User::first();
+        }
 
         $order->update([
             'employee_id' => $employeeId->id,
